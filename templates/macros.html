@@ -1,0 +1,38 @@
+{% macro post_content(page, show_meta) %}
+<header>
+  <h1 class="text-2xl font-bold">{{ page.title }}</h1>
+  {% if show_meta %}
+  <p class="font-bold m-0">
+    <time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time>
+    <span> &middot; </span>
+    <a href="{{ config.extra.author_link }}">{{ config.extra.author }}</a>
+  </p>
+  {% endif %}
+  {% if page.description %}
+  <blockquote>{{ page.description }}</blockquote>
+  {% endif %}
+  <hr />
+</header>
+<main>
+  <article class="md">
+    {{ page.content | safe }}
+
+    {% if page.taxonomies.tags and page.taxonomies.tags | length > 0 %}
+    <div class="tags">{% for tag in page.taxonomies.tags %}<code class="pill tag"><a href="{{ get_url(path='@/blog/_index.md') }}#tag-{{ tag }}">#{{ tag }}</a></code>&nbsp;{% endfor %}</div>
+    {% endif %}
+
+    {% if show_meta %}
+    <div id="last-updated" class="text-sm">
+      last updated: <time datetime="{{ page.updated | default(value=page.date) }}">{{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}</time>
+    </div>
+    {% endif %}
+
+    {% if config.extra.footer %}
+    <div id="post-footer">
+      <hr />
+      {{ config.extra.footer | markdown | safe }}
+    </div>
+    {% endif %}
+  </article>
+</main>
+{% endmacro post_content %}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ get_url(path='style.css') }}" />
+  <link rel="stylesheet" href="{{ get_url(path='smol-v2.css') }}" />
+  {% block extra_head %}{% endblock extra_head %}
+  {% if page %}<link rel="icon" href="{{ page.extra.icon | default(value=get_url(path='favicon.ico')) }}" />
+  {% elif section %}<link rel="icon" href="{{ section.extra.icon | default(value=get_url(path='favicon.ico')) }}" />
+  {% endif %}
+  <title>{% if page %}{{ page.title }}{% elif section %}{{ section.title }}{% endif %}</title>
+</head>
+<body>
+  {% block content %}{% endblock content %}
+  {% include "footer.html" %}
+</body>
+<script src="https://esm.sh/instant.page@5.2.0/es2015/instant.page.mjs" integrity="sha384-Wv7ml440sSexdrNHrzr/JzJM3IHIgvoVAwwBvqI02y5hyk6NQBq75gkmowKuTFQB" type="module" crossorigin="anonymous"></script>
+</html>

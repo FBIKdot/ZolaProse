@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+{{ macros::post_content(page=page, show_meta=true) }}
+{% endblock content %}

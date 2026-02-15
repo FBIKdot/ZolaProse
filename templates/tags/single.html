@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="text-center">
+  <h1 class="text-2xl font-bold mt-2">#{{ term.name }}</h1>
+  <hr />
+</header>
+<main>
+  <section class="posts group mt-2">
+    {% for post in term.pages | sort(attribute="date") | reverse %}
+    <article class="post">
+      <div class="flex items-center">
+        <time datetime="{{ post.date }}" class="text-sm post-date">{{ post.date | date(format="%Y-%m-%d") }}</time>
+        <span class="text-md flex-1 m-0 transform-none">
+          <a href="{{ post.permalink }}">{{ post.title }}</a>
+        </span>
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock content %}

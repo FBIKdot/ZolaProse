@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+{% set error_page = get_page(path="404.md") %}
+{{ macros::post_content(page=error_page, show_meta=false) }}
+{% endblock content %}
