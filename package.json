@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build":"npx zola-bin build"
+  },
+  "devDependencies": {
+    "zola-bin":"2.1.0"
+  }
+}
