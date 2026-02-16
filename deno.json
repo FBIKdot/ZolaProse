@@ -1,5 +1,11 @@
 {
   "fmt": {
     "include": ["./content"]
+  },
+  "imports": {
+    "zola-bin": "npm:zola-bin@2.1.0"
+  },
+  "tasks": {
+    "build":"deno run -E --allow-ffi zola-bin build"
   }
 }
