@@ -26,7 +26,7 @@ taxonomies = "on"
 
 [extra]
 bio = "Minimalism"
-nav = [{ name = "home", url = "/" }, { name = "blog", url = "/blog" }, { name = "friends", url = "/friends" }, { name = "email", url = "mailto:fbik@fbik.top" }]
+nav = [{ name = "home", url = "/" }, { name = "blog", url = "/blog" }, { name = "tags", url = "/tags" },{ name = "friends", url = "/friends" }, { name = "email", url = "mailto:fbik@fbik.top" }]
 author = "FBIK."
 author_link = "/"
 footer = "Copyright 2025 FBIK. All rights reserved.\n\nReproduction requires attribution to the original source."

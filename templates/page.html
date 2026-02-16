@@ -1,19 +1,6 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block content %}
-<header class="text-center">
-  <h1 class="text-2xl font-bold mt-2">{{ page.title }}</h1>
-  <nav>
-    {% for item in config.extra.nav %}
-    <span>{% if not loop.first %} | {% endif %}</span>
-    <a href="{{ item.url }}" {% if item.url is starting_with("http") or item.url is starting_with("mailto") %}target="_blank"{% endif %} rel="noopener noreferrer" class="text-lg transform-none">{{ item.name }}</a>
-    {% endfor %}
-  </nav>
-  <hr />
-</header>
-<main>
-  <article class="md">
-    {{ page.content | safe }}
-  </article>
-</main>
+{{ macros::simple_page(page=page) }}
 {% endblock content %}

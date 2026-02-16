@@ -1,17 +1,6 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block content %}
-<header class="text-center">
-  <h1 class="text-2xl font-bold mt-2">Tags</h1>
-  <hr />
-</header>
-<main>
-  <ul>
-    {% for term in terms %}
-    <li>
-      <a href="{{ term.permalink }}">{{ term.name }}</a> ({{ term.pages | length }})
-    </li>
-    {% endfor %}
-  </ul>
-</main>
+{{ macros::list_page(title="Tags", items=terms, type="tags") }}
 {% endblock content %}

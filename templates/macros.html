@@ -1,3 +1,27 @@
+{% macro page_header(title) %}
+<header class="text-center">
+  <h1 class="text-2xl font-bold mt-2">{{ title }}</h1>
+  <nav>
+    {% for item in config.extra.nav %}
+    <span>{% if not loop.first %} | {% endif %}</span>
+    <a href="{{ item.url }}" {% if item.url is starting_with("http") or item.url is starting_with("mailto") %}target="_blank"{% endif %} rel="noopener noreferrer" class="text-lg transform-none">{{ item.name }}</a>
+    {% endfor %}
+    <span> | </span>
+    <a href="{{ get_url(path='atom.xml') }}" class="text-lg transform-none">rss</a>
+  </nav>
+  <hr />
+</header>
+{% endmacro page_header %}
+
+{% macro simple_page(page) %}
+{{ self::page_header(title=page.title) }}
+<main>
+  <article class="md">
+    {{ page.content | safe }}
+  </article>
+</main>
+{% endmacro simple_page %}
+
 {% macro post_content(page, show_meta) %}
 <header>
   <h1 class="text-2xl font-bold">{{ page.title }}</h1>
@@ -18,7 +42,7 @@
     {{ page.content | safe }}
 
     {% if page.taxonomies.tags and page.taxonomies.tags | length > 0 %}
-    <div class="tags">{% for tag in page.taxonomies.tags %}<code class="pill tag"><a href="{{ get_url(path='@/blog/_index.md') }}#tag-{{ tag }}">#{{ tag }}</a></code>&nbsp;{% endfor %}</div>
+    <div class="tags">{% for tag in page.taxonomies.tags %}<code class="pill tag"><a href="{{ get_taxonomy_url(kind='tags', name=tag) }}">#{{ tag }}</a></code>&nbsp;{% endfor %}</div>
     {% endif %}
 
     {% if show_meta %}
@@ -36,3 +60,56 @@
   </article>
 </main>
 {% endmacro post_content %}
+
+{% macro section_page(section, posts) %}
+{{ self::page_header(title=section.title) }}
+<main>
+  {% if section.content %}
+  <section>
+    <article class="md">
+      {{ section.content | safe }}
+    </article>
+    {% if section.extra.show_posts_list %}<hr />{% endif %}
+  </section>
+  {% endif %}
+
+  {% if posts and section.extra.show_posts_list %}
+  {{ self::list_items(items=posts, type="posts") }}
+  {% endif %}
+</main>
+{% endmacro section_page %}
+
+{% macro list_page(title, items, type) %}
+{{ self::page_header(title=title) }}
+<main>
+  {{ self::list_items(items=items, type=type) }}
+</main>
+{% endmacro list_page %}
+
+{% macro list_items(items, type) %}
+<section class="posts group mt-2">
+  {% if type == "tags" %}
+  {% for item in items %}
+  <article>
+    <div class="flex items-center">
+      <span class="text-md flex-1 m-0 transform-none">
+        <a href="{{ item.permalink }}">#{{ item.name }}</a>
+      </span>
+      <span class="text-sm post-date">({{ item.pages | length }})</span>
+    </div>
+  </article>
+  {% endfor %}
+  {% else %}
+  {% for item in items | sort(attribute="date") | reverse %}
+  <article>
+    <div class="flex items-center">
+      <time datetime="{{ item.date }}" class="text-sm post-date">{{ item.date | date(format="%Y-%m-%d") }}</time>
+      <span class="text-md flex-1 m-0 transform-none">
+        <a href="{{ item.permalink }}">{{ item.title }}</a>
+      </span>
+    </div>
+  </article>
+  {% endfor %}
+  {% endif %}
+</section>
+{% endmacro list_items %}

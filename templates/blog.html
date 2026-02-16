@@ -1,62 +1,7 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block content %}
 {% set posts = get_section(path="blog/_index.md") %}
-{% set all_tags = [] %}
-{% for post in posts.pages %}
-  {% for tag in post.taxonomies.tags %}
-    {% set_global all_tags = all_tags | concat(with=[tag]) | unique %}
-  {% endfor %}
-{% endfor %}
-
-<style>
-  .invisibility{ display:none }
-  .post { display: var(--display, block); }
-  {% for tag in all_tags %}#tag-{{ tag }}:target ~ main .post:not([data-tag~="{{ tag }}"]){% if not loop.last %},{% endif %}{% endfor %}{ --display: none; }
-  {% for tag in all_tags %}#tag-{{ tag }}:target ~ main .clear-filter{% if not loop.last %},{% endif %}{% endfor %}{ display: block}
-</style>
-
-{% for tag in all_tags %}
-<a class="invisibility" href="#tag-{{ tag }}" id="tag-{{ tag }}"></a>
-{% endfor %}
-
-<header class="text-center">
-  <h1 class="text-2xl font-bold mt-2">{{ section.title }}</h1>
-  {% if section.extra.bio %}{{ section.extra.bio }}{% elif config.extra.bio %}{{ config.extra.bio }}{% endif %}
-  <nav>
-    {% for item in config.extra.nav %}
-    <span>{% if not loop.first %} | {% endif %}</span>
-    <a href="{{ item.url }}" {% if item.url is starting_with("http") or item.url is starting_with("mailto") %}target="_blank"{% endif %} rel="noopener noreferrer" class="text-lg transform-none">{{ item.name }}</a>
-    {% endfor %}
-    <span> | </span>
-    <a href="{{ get_url(path='atom.xml') }}" class="text-lg transform-none">rss</a>
-  </nav>
-  <hr />
-</header>
-<main>
-  {% if section.content %}
-  <section>
-    <article class="md">
-      {{ section.content | safe }}
-    </article>
-    {% if section.extra.show_posts_list %}<hr />{% endif %}
-  </section>
-  {% endif %}
-
-  {% if section.extra.show_posts_list %}
-  <section class="posts group mt-2">
-    <a href="#" class="invisibility clear-filter">clear filters</a>
-    {% for post in posts.pages | sort(attribute="date") | reverse %}
-    <article class="post" data-tag="{%- for tag in post.taxonomies.tags -%}{{ tag }} {%- endfor -%}">
-      <div class="flex items-center">
-        <time datetime="{{ post.date }}" class="text-sm post-date">{{ post.date | date(format="%Y-%m-%d") }}</time>
-        <span class="text-md flex-1 m-0 transform-none">
-          <a href="{{ post.permalink }}">{{ post.title }}</a>
-        </span>
-      </div>
-    </article>
-    {% endfor %}
-  </section>
-  {% endif %}
-</main>
+{{ macros::section_page(section=section, posts=posts.pages) }}
 {% endblock content %}
